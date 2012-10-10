@@ -19,4 +19,11 @@ class cacert {
     source => "puppet://$server/modules/cacert/cacert-ca-class-3.crt",
     owner => root, group => root, mode => '444';
   }
+
+  # refresh all services on cert or key change
+  File['/etc/pki/tls/certs/cacert-ca-class-1.crt']
+  ~>File['/etc/pki/tls/certs/cacert-ca-class-3.crt']
+  ~>Cacert::Cert <| |>
+  ~>Cacert::Key <| |>
+  ~>Service <| |>
 }
